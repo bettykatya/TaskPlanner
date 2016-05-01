@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_task_name_edit"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="39dp"
+        android:layout_alignParentStart="false"
+        android:hint="short task name"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/add_task_date_edit"
+        android:hint="set date of task"
+        android:layout_below="@+id/add_task_name_edit"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="46dp" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/add_task_description_edit"
+        android:hint="full description of your task"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_task"
+        android:id="@+id/add_task_button"
+        android:layout_marginTop="79dp"
+        android:layout_below="@+id/add_task_description_edit"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

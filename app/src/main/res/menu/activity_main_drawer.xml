@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_day_tasks"
+            android:title="@string/menu_day_tasks" />
+        <item
+            android:id="@+id/menu_week_tasks"
+            android:title="@string/menu_week_tasks" />
+        <item
+            android:id="@+id/menu_month_tasks"
+            android:title="@string/menu_month_tasks" />
+        <item
+            android:id="@+id/menu_all_tasks"
+            android:title="@string/menu_all_tasks" />
+    </group>
+
+    <item android:title="@string/projects">
+        <menu>
+            <item
+                android:id="@+id/project_home"
+                android:title="@string/home" />
+            <item
+                android:id="@+id/project_job"
+                android:title="@string/job" />
+        </menu>
+    </item>
+
+</menu>
