@@ -1,8 +1,10 @@
-package com.bsu.katyakrechko.taskplanner.Data;
+package com.katlab.taskplanner.Data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.katlab.taskplanner.Data.DataHelper;
 
 /**
  * Created by katyakrechko@gmail.com

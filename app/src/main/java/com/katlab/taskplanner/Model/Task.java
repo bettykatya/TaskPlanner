@@ -1,18 +1,12 @@
-package com.bsu.katyakrechko.taskplanner.Model;
+package com.katlab.taskplanner.Model;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.bsu.katyakrechko.taskplanner.Data.DataHelper;
+import com.katlab.taskplanner.Data.DataHelper;
+import com.katlab.taskplanner.Model.Tag;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by katyakrechko@gmail.com

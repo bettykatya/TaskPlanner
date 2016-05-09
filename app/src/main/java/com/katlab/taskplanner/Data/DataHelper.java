@@ -1,4 +1,4 @@
-package com.bsu.katyakrechko.taskplanner.Data;
+package com.katlab.taskplanner.Data;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,8 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.bsu.katyakrechko.taskplanner.Model.Tag;
-import com.bsu.katyakrechko.taskplanner.Model.Task;
+import com.katlab.taskplanner.Model.Tag;
+import com.katlab.taskplanner.Model.Task;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

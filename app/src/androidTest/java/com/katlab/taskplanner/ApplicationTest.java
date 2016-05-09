@@ -1,4 +1,4 @@
-package com.bsu.katyakrechko.taskplanner;
+package com.katlab.taskplanner;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -1,8 +1,5 @@
-package com.bsu.katyakrechko.taskplanner.Activities;
+package com.katlab.taskplanner.Activities;
 
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
@@ -25,11 +22,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import com.bsu.katyakrechko.taskplanner.Adapters.TaskAdapter;
-import com.bsu.katyakrechko.taskplanner.Data.DataHelper;
-import com.bsu.katyakrechko.taskplanner.Model.Tag;
-import com.bsu.katyakrechko.taskplanner.Model.Task;
-import com.bsu.katyakrechko.taskplanner.R;
+import com.katlab.taskplanner.Adapters.TaskAdapter;
+import com.katlab.taskplanner.Data.DataHelper;
+import com.katlab.taskplanner.Model.Tag;
+import com.katlab.taskplanner.Model.Task;
+import com.katlab.taskplanner.R;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -1,7 +1,6 @@
-package com.bsu.katyakrechko.taskplanner.Adapters;
+package com.katlab.taskplanner.Adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bsu.katyakrechko.taskplanner.Activities.MainActivity;
-import com.bsu.katyakrechko.taskplanner.Model.Task;
-import com.bsu.katyakrechko.taskplanner.R;
+import com.katlab.taskplanner.Model.Task;
+import com.katlab.taskplanner.R;
 
 import java.util.ArrayList;
 

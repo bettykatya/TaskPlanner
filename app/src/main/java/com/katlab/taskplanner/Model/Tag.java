@@ -1,4 +1,4 @@
-package com.bsu.katyakrechko.taskplanner.Model;
+package com.katlab.taskplanner.Model;
 
 /**
  * Created by katyakrechko@gmail.com

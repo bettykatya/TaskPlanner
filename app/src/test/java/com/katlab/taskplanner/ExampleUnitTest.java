@@ -1,4 +1,4 @@
-package com.bsu.katyakrechko.taskplanner;
+package com.katlab.taskplanner;
 
 import org.junit.Test;
 
