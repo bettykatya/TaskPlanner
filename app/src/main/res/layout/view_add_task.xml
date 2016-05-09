@@ -18,7 +18,7 @@
         android:inputType="date"
         android:ems="10"
         android:id="@+id/add_task_date_edit"
-        android:hint="set date of task"
+        android:hint="dd.mm.yyyy"
         android:layout_below="@+id/add_task_name_edit"
         android:layout_alignParentStart="true"
         android:layout_marginTop="46dp" />
@@ -31,15 +31,25 @@
         android:id="@+id/add_task_description_edit"
         android:hint="full description of your task"
         android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/status_spinner"
+        android:layout_marginTop="46dp"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/create_task"
         android:id="@+id/add_task_button"
-        android:layout_marginTop="79dp"
-        android:layout_below="@+id/add_task_description_edit"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="83dp" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/status_spinner"
+        android:layout_below="@+id/add_task_date_edit"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp"/>
 
 </RelativeLayout>

@@ -25,6 +25,8 @@ public class DataHelper {
     static DBHelper dbHelper;
     static SQLiteDatabase db;
 
+    public static int numb = 0;
+
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
     //names for tables and columns in database
@@ -62,7 +64,6 @@ public class DataHelper {
     }
 
     public static void addTask(Task task){
-        int task_id = task.getTaskID();
         String task_name = task.getTaskName();
         String task_description = task.getTaskDescription();
         String task_date = task.getTaskDateString();
@@ -72,7 +73,7 @@ public class DataHelper {
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME_TASK_ID, task_id);
+        values.put(COLUMN_NAME_TASK_ID, numb);
         values.put(COLUMN_NAME_TASK_NAME, task_name);
         values.put(COLUMN_NAME_TASK_DESCRIPTION, task_description);
         values.put(COLUMN_NAME_TASK_DATE, task_date);
@@ -82,6 +83,8 @@ public class DataHelper {
         // Insert the new row, returning the primary key value of the new row
         long newRowId;
         newRowId = db.insert(TABLE_TASKS_NAME, null, values);
+        task.setId(numb);
+        numb++;
     }
 
     public static ArrayList <Task> getAllTasks(){
@@ -92,14 +95,15 @@ public class DataHelper {
             if(c.moveToFirst()){
                 do {
                     try {
+                        String task_id = c.getString(c.getColumnIndex(COLUMN_NAME_TASK_ID));
                         String task_name = c.getString(c.getColumnIndex(COLUMN_NAME_TASK_NAME));
                         String task_description = c.getString(c.getColumnIndex(COLUMN_NAME_TASK_DESCRIPTION));
                         String task_date_str = c.getString(c.getColumnIndex(COLUMN_NAME_TASK_DATE));
+                        String task_status_str = c.getString(c.getColumnIndex(COLUMN_NAME_TASK_STATUS));
                         Date task_date = DATE_FORMAT.parse(task_date_str);
-                        /*String task_status = c.getString(c.getColumnIndex(COLUMN_NAME_TASK_STATUS));
+                        Task.Status task_status = Task.Status.valueOf(task_status_str);
                         ArrayList<Tag> tags = new ArrayList<>();
-                        */
-                        Task task = new Task(task_name, task_description, task_date/*, task_status,tags*/);
+                        Task task = new Task(task_id, task_name, task_description, task_date, task_status,tags);
                         allTasks.add(task);
                     } catch (Exception e){Log.e("error", "error-getAllTasks");}
                 } while (c.moveToNext());
@@ -117,6 +121,7 @@ public class DataHelper {
             if(c.moveToFirst()){
                 do {
                     try {
+                        String task_id = c.getString(c.getColumnIndex(COLUMN_NAME_TASK_ID));
                         String task_name = c.getString(c.getColumnIndex(COLUMN_NAME_TASK_NAME));
                         String task_description = c.getString(c.getColumnIndex(COLUMN_NAME_TASK_DESCRIPTION));
                         String task_date_str = c.getString(c.getColumnIndex(COLUMN_NAME_TASK_DATE));
@@ -124,7 +129,7 @@ public class DataHelper {
                         Task.Status task_status = Task.Status.valueOf(task_status_str);
                         ArrayList<Tag> tags = new ArrayList<>();
                         Date task_date = DATE_FORMAT.parse(task_date_str);
-                        Task task = new Task(task_name, task_description, task_date, task_status,tags);
+                        Task task = new Task(task_id, task_name, task_description, task_date, task_status,tags);
                         tasks.add(task);
                     } catch (Exception e){Log.e("error", "getDayTasks");}
                 } while (c.moveToNext());
@@ -142,13 +147,14 @@ public class DataHelper {
 
         Calendar cal_end_week = GregorianCalendar.getInstance();
         cal_end_week.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        cal_end_week.add(Calendar.DATE, 6);
+        cal_end_week.add(Calendar.DATE, 7);
 
         Cursor c = db.query( table, columns, selection, selectionArgs, groupBy, having, orderBy);
         if(c != null){
             if(c.moveToFirst()){
                 do {
                     try {
+                        String task_id = c.getString(c.getColumnIndex(COLUMN_NAME_TASK_ID));
                         String task_name = c.getString(c.getColumnIndex(COLUMN_NAME_TASK_NAME));
                         String task_description = c.getString(c.getColumnIndex(COLUMN_NAME_TASK_DESCRIPTION));
                         String task_date_str = c.getString(c.getColumnIndex(COLUMN_NAME_TASK_DATE));
@@ -160,8 +166,8 @@ public class DataHelper {
                         Calendar task_cal = GregorianCalendar.getInstance();
                         task_cal.setTime(task_date);
 
-                        if(task_cal.after(cal_start_week) && task_cal.before(cal_end_week)){
-                            Task task = new Task(task_name, task_description, task_date, task_status,tags);
+                        if((task_cal.after(cal_start_week) && task_cal.before(cal_end_week)) ){
+                            Task task = new Task(task_id, task_name, task_description, task_date, task_status,tags);
                             tasks.add(task);
                         }
                     } catch (Exception e){Log.e("error", "parse date error - getWeekTasks");}
@@ -185,6 +191,7 @@ public class DataHelper {
             if(c.moveToFirst()){
                 do {
                     try {
+                        String task_id = c.getString(c.getColumnIndex(COLUMN_NAME_TASK_ID));
                         String task_name = c.getString(c.getColumnIndex(COLUMN_NAME_TASK_NAME));
                         String task_description = c.getString(c.getColumnIndex(COLUMN_NAME_TASK_DESCRIPTION));
                         String task_date_str = c.getString(c.getColumnIndex(COLUMN_NAME_TASK_DATE));
@@ -192,7 +199,7 @@ public class DataHelper {
                         Task.Status task_status = Task.Status.valueOf(task_status_str);
                         ArrayList<Tag> tags = new ArrayList<>();
                         Date task_date = DATE_FORMAT.parse(task_date_str);
-                        Task task = new Task(task_name, task_description, task_date, task_status,tags);
+                        Task task = new Task(task_id, task_name, task_description, task_date, task_status,tags);
                         tasks.add(task);
                     } catch (Exception e){Log.e("error", "parse date error - getMonthTasks");}
                 } while (c.moveToNext());
@@ -206,8 +213,15 @@ public class DataHelper {
 
     }
 
-    public static void deleteTask(){
+    public static void deleteTask(Task task){
+        Long id = task.getTaskID();
+        String where =  " " + COLUMN_NAME_TASK_ID + "=" + id;
+        db.delete(TABLE_TASKS_NAME, where, null );
+    }
 
+    public static void editTask(Task task, Task new_task){
+        DataHelper.deleteTask(task);
+        DataHelper.addTask(new_task);
     }
 
     public static void deleteTag(){

@@ -3,43 +3,63 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText4"
+        android:id="@+id/edit_task_name_edit"
         android:layout_alignParentTop="true"
         android:layout_marginTop="39dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:hint="short task name" />
+        android:layout_alignParentStart="false"
+        android:hint="short task name"
+        android:layout_alignParentEnd="true" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="date"
         android:ems="10"
-        android:id="@+id/editText5"
-        android:layout_below="@+id/editText4"
+        android:id="@+id/edit_task_date_edit"
+        android:hint="dd.mm.yyyy"
+        android:layout_below="@+id/edit_task_name_edit"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:hint="set date of task" />
+        android:layout_marginTop="46dp" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:ems="10"
-        android:id="@+id/editText6"
+        android:id="@+id/edit_task_description_edit"
         android:hint="full description of your task"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/status_spinner"
+        android:layout_marginTop="46dp"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit Task"
-        android:id="@+id/button2"
-        android:layout_below="@+id/editText6"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="79dp" />
+        android:text="@string/edit_task"
+        android:id="@+id/edit_task_button"
+        android:layout_below="@+id/edit_task_description_edit"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="40dp" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/status_spinner"
+        android:layout_below="@+id/edit_task_date_edit"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_task"
+        android:id="@+id/delete_task_button"
+        android:layout_alignTop="@+id/edit_task_button"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="63dp" />
 
 </RelativeLayout>

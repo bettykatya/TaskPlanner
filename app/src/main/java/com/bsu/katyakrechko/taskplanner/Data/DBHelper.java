@@ -11,13 +11,13 @@ public class DBHelper extends SQLiteOpenHelper {
     private static String DATABASE_NAME = "TaskPlanner.db";
     private static int DATABASE_VERSION = 1;
 
+    private static final String ID_TYPE = " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL";
     private static final String TEXT_TYPE = " TEXT";
-    private static final String INT_TYPE = " INTEGER";
     private static final String COMMA_SEP = ",";
 
     private static final String SQL_CREATE_TAGS_TABLE =
             "CREATE TABLE " + DataHelper.TABLE_TAGS_NAME + " (" +
-                    DataHelper.COLUMN_NAME_TAG_ID + INT_TYPE + COMMA_SEP +
+                    DataHelper.COLUMN_NAME_TAG_ID + ID_TYPE + COMMA_SEP +
                     DataHelper.COLUMN_NAME_TAG_NAME + TEXT_TYPE + COMMA_SEP +
                     DataHelper.COLUMN_NAME_TAG_TYPE + TEXT_TYPE +
                     " )";
@@ -26,7 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_TASKS_TABLE =
             "CREATE TABLE " + DataHelper.TABLE_TASKS_NAME + " (" +
-                    DataHelper.COLUMN_NAME_TASK_ID + INT_TYPE + COMMA_SEP +
+                    DataHelper.COLUMN_NAME_TASK_ID + ID_TYPE + COMMA_SEP +
                     DataHelper.COLUMN_NAME_TASK_NAME + TEXT_TYPE + COMMA_SEP +
                     DataHelper.COLUMN_NAME_TASK_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
                     DataHelper.COLUMN_NAME_TASK_DATE + TEXT_TYPE + COMMA_SEP +

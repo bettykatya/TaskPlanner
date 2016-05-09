@@ -1,12 +1,15 @@
 package com.bsu.katyakrechko.taskplanner.Adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bsu.katyakrechko.taskplanner.Activities.MainActivity;
 import com.bsu.katyakrechko.taskplanner.Model.Task;
 import com.bsu.katyakrechko.taskplanner.R;
 
@@ -51,9 +54,38 @@ public class TaskAdapter extends BaseAdapter {
         }
 
         Task task = getTask(position);
+
+        int image_id;
+        switch(task.getTaskStatus()){
+            case TASK_TO_DO:{
+                image_id = R.mipmap.to_do;
+                break;
+            }
+            case TASK_COMPLETED:{
+                image_id = R.mipmap.completed;
+                break;
+            }
+            case TASK_MIGRATED:{
+                image_id = R.mipmap.migrated;
+                break;
+            }
+            case TASK_NOT_ACTUAL:{
+                image_id = R.mipmap.not_actual;
+                break;
+            }
+            case NOTE:{
+                image_id = R.mipmap.note;
+                break;
+            }
+            default:{
+                image_id = R.mipmap.to_do;
+            }
+        }
+
         ((TextView) view.findViewById(R.id.task_name_label)).setText(task.getTaskName());
         ((TextView) view.findViewById(R.id.task_decription_label)).setText(task.getTaskDescription());
         ((TextView) view.findViewById(R.id.task_date_label)).setText(task.getTaskDateString());
+        ((ImageView) view.findViewById(R.id.task_status_image)).setImageResource(image_id);
 
         return view;
     }

@@ -1,5 +1,8 @@
 package com.bsu.katyakrechko.taskplanner.Activities;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
@@ -14,10 +17,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.bsu.katyakrechko.taskplanner.Adapters.TaskAdapter;
 import com.bsu.katyakrechko.taskplanner.Data.DataHelper;
@@ -37,7 +43,6 @@ import java.util.Date;
 //TODO не вызывать onCreate при изменении ориентации
 //TODO парсить разные форматы даты
 //TODO обновление списка перетягиванием вниз
-//TODO изображения для кнопки и тасков
 //TODO удаление таска
 //TODO редактирование таска
 //TODO просмотр инфы о таске
@@ -49,6 +54,11 @@ import java.util.Date;
 //TODO добавление проектов-тегов в меню
 //TODO рефакторинг
 //TODO сортировка тасков по времени для недели/месяца
+//TODO добавить кнопки на app bar для создания таска/редактирования и т.д.
+//TODO для айтема списка добавить справа стрелку вправо
+//TODO add onBackPressed
+
+//TODO пофиксить таски на неделю не возвращаются таски за понедельник
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -59,6 +69,8 @@ public class MainActivity extends AppCompatActivity
     private TaskAdapter adapter;
     ArrayList <Task> tasksToShow;
     private Date today;
+
+    private Task current_task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,14 +100,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-       /* Date day = new Date();
-        try {
-            day = DataHelper.DATE_FORMAT.parse("10.10.2015");
-        } catch(Exception e ){Log.e("error","error-onCreate-parseDate");}*/
-
         DataHelper.openDB(this);
-        //Task task = new Task("task1","description1", day);
-        //DataHelper.addTask(task);
         tasksToShow = DataHelper.getAllTasks();
         openListTaskView();
     }
@@ -168,6 +173,13 @@ public class MainActivity extends AppCompatActivity
         ltInflater.inflate(R.layout.view_add_task,incl, true);
         setOnclickLisenerAddTask();
         fab.hide();
+
+        //TODO поменять вид выпадающих items, добавить превью изображения
+        Spinner spinner = (Spinner) findViewById(R.id.status_spinner);
+        ArrayAdapter<Task.Status> adapter = new ArrayAdapter<Task.Status>(this,
+                android.R.layout.simple_spinner_item, Task.Status.values());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
     public void setOnclickLisenerAddTask(){
         Button button = (Button) findViewById(R.id.add_task_button);
@@ -191,11 +203,16 @@ public class MainActivity extends AppCompatActivity
             EditText taskDecriptionEdit = (EditText) findViewById(R.id.add_task_description_edit);
             String taskDescription = taskDecriptionEdit.getText().toString();
 
-            DataHelper.addTask(new Task(taskName, taskDescription, day, status_to_do,new ArrayList<Tag>()));
+            Spinner spinner = (Spinner) findViewById(R.id.status_spinner);
+            Task.Status status = (Task.Status) spinner.getSelectedItem();
+
+            DataHelper.addTask(new Task(Integer.toString(DataHelper.numb), taskName, taskDescription, day, status,new ArrayList<Tag>()));
             tasksToShow = DataHelper.getDayTasks(today);
             openListTaskView();
         }
     };
+
+
 
     private void openListTaskView(){
         incl.removeAllViews();
@@ -205,7 +222,91 @@ public class MainActivity extends AppCompatActivity
         adapter = new TaskAdapter(this,tasksToShow);
         ListView listView = (ListView) findViewById(R.id.tasks_list_view);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(onItemClickListener);
+
     }
+
+    public void openEditTaskView(Task task){
+        incl.removeAllViews();
+        LayoutInflater ltInflater = getLayoutInflater();
+        ltInflater.inflate(R.layout.view_edit_task,incl, true);
+        setOnclickLisenerEditTask();
+        fab.hide();
+
+        //TODO поменять вид выпадающих items, добавить превью изображения
+        Spinner spinner = (Spinner) findViewById(R.id.status_spinner);
+        ArrayAdapter<Task.Status> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, Task.Status.values());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        EditText taskNameEdit = (EditText) findViewById(R.id.edit_task_name_edit);
+        EditText taskDateEdit = (EditText) findViewById(R.id.edit_task_date_edit);
+        EditText taskDecriptionEdit = (EditText) findViewById(R.id.edit_task_description_edit);
+
+        try {
+            taskNameEdit.setText(task.getTaskName());
+            taskDecriptionEdit.setText(task.getTaskDescription());
+            taskDateEdit.setText(task.getTaskDateString());
+        } catch(Exception e){Log.e("error", "openEditTaskView - nullPointerException");}
+
+        Task.Status status = task.getTaskStatus();
+        int pos = adapter.getPosition(status);
+        spinner.setSelection(pos);
+    }
+
+    public void setOnclickLisenerEditTask(){
+        Button buttonEdit = (Button) findViewById(R.id.edit_task_button);
+        Button buttonDelete = (Button) findViewById(R.id.delete_task_button);
+        buttonEdit.setOnClickListener(editTaskListener);
+        buttonDelete.setOnClickListener(deleteTaskListener);
+    }
+    OnClickListener editTaskListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {//TODO add try-catch blocks
+            EditText taskNameEdit = (EditText) findViewById(R.id.edit_task_name_edit);
+            String taskName = taskNameEdit.getText().toString();
+
+            EditText taskDateEdit = (EditText) findViewById(R.id.edit_task_date_edit);
+            String taskDateString = taskDateEdit.getText().toString();
+            Date day = new Date();
+            try {
+                day = DataHelper.DATE_FORMAT.parse(taskDateString);
+            } catch (Exception e){
+                Log.e("error","error-addTaskListener-parseDate");//TODO add message for user that date was changed to today
+            }
+
+            EditText taskDecriptionEdit = (EditText) findViewById(R.id.edit_task_description_edit);
+            String taskDescription = taskDecriptionEdit.getText().toString();
+
+            Spinner spinner = (Spinner) findViewById(R.id.status_spinner);
+            Task.Status status = (Task.Status) spinner.getSelectedItem();
+
+            Task new_task = new Task(Integer.toString(DataHelper.numb), taskName, taskDescription, day, status,new ArrayList<Tag>());
+            DataHelper.editTask(current_task, new_task);
+            tasksToShow = DataHelper.getDayTasks(today);
+            openListTaskView();
+        }
+    };
+
+    OnClickListener deleteTaskListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            DataHelper.deleteTask(current_task);
+            tasksToShow = DataHelper.getDayTasks(today);
+            openListTaskView();
+        }
+    };
+
+
+
+    public final AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener(){
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            current_task = (Task)adapter.getItem(position);
+            openEditTaskView(current_task);
+        }
+    };
 
 
 }

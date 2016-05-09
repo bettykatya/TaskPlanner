@@ -11,7 +11,17 @@
     <string name="menu_month_tasks">Month Tasks</string>
     <string name="menu_all_tasks">All Tasks</string>
     <string name="create_task">Create Task</string>
+    <string name="edit_task">Edit Task</string>
+    <string name="delete_task">Delete Task</string>
     <string name="projects">Projects</string>
     <string name="home">Home</string>
     <string name="job">Job</string>
+
+    <string-array name="status_array">
+        <item>TO_DO</item>
+        <item>Completed</item>
+        <item>Not Actual</item>
+        <item>Migrated</item>
+        <item>Note</item>
+    </string-array>
 </resources>

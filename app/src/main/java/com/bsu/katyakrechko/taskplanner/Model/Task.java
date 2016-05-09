@@ -1,6 +1,7 @@
 package com.bsu.katyakrechko.taskplanner.Model;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.bsu.katyakrechko.taskplanner.Data.DataHelper;
 
@@ -18,7 +19,7 @@ import java.util.ListIterator;
  */
 
 public class Task {
-    int task_id;
+    long task_id;
     private String task_name;
     private String task_description;
     private Date task_date;
@@ -34,7 +35,6 @@ public class Task {
     }
 
     public Task(String name){
-        task_id = 1;
         task_name = name;
         task_description = DEFAULT_STRING;
         task_date = new Date();
@@ -43,7 +43,6 @@ public class Task {
     }
 
     public Task(String name, String description, Date day){
-        task_id = 1;
         task_name = name;
         task_description = description;
         task_date = day;
@@ -51,8 +50,8 @@ public class Task {
         tags = new ArrayList<Tag>();
     }
 
-    public Task(String name, String description, Date day, Status status, ArrayList <Tag> tagList){
-        task_id = 1;
+    public Task(String task_id_str, String name, String description, Date day, Status status, ArrayList <Tag> tagList){
+        task_id = Integer.parseInt(task_id_str);
         task_name = name;
         task_description = description;
         task_date = day;
@@ -60,9 +59,12 @@ public class Task {
         tags = tagList;
     }
 
+    public void setId(long id){
+        this.task_id = id;
+        Log.i("info", "setId = " + Long.toString(id) + " task_id = " + task_id);
+    }
 
-
-    public int getTaskID(){
+    public long getTaskID(){
         return task_id;
     }
     public String getTaskName(){
